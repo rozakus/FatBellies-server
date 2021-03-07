@@ -47,10 +47,7 @@ class BuffetController {
         attributes: { exclude: ['createdAt', 'updatedAt'] }
       })
 
-      if (!buffetId) { return next({ name: 404 }) }
-      if (buffetId) {
-        return res.status(200).json({ data: buffetId })
-      }
+      return res.status(200).json({ data: buffetId })
 
     } catch (err) {
       return next(err)
@@ -62,26 +59,22 @@ class BuffetController {
       const { id } = req.params
       const { meal, maxCapacity, price } = req.body
 
-      const buffetId = await Buffet.findByPk(id)
+      const updateBuffet = await Buffet.update({
+        meal,
+        maxCapacity: +maxCapacity,
+        price: +price
+      }, { where: { id: +id } })
 
-      if (!buffetId) { return next({ name: 404 }) }
+      console.log(`BuffetId ${id} is updated, ${updateBuffet}`)
 
-      if (buffetId) {
-        const updateBuffet = await Buffet.update({
-          meal,
-          maxCapacity: +maxCapacity,
-          price: +price
-        }, { where: { id: +id } })
-
-        const response = {
-          id: +id,
-          meal,
-          maxCapacity: +maxCapacity,
-          price: +price
-        }
-
-        return res.status(200).json({ data: response })
+      const response = {
+        id: +id,
+        meal,
+        maxCapacity: +maxCapacity,
+        price: +price
       }
+
+      return res.status(200).json({ data: response })
 
     } catch (err) {
       return next(err)
@@ -90,16 +83,11 @@ class BuffetController {
 
   static async deleteBuffet(req, res, next) {
     try {
-      const { id } = req.params
+      const { id, meal } = req.buffet
+      const deleteBuffet = await Buffet.destroy({ where: { id: +id } })
+      console.log(`BuffetId ${id} is deleted, ${deleteBuffet}`)
 
-      const buffetId = await Buffet.findByPk(id)
-
-      if (!buffetId) { return next({ name: 404 }) }
-      if (buffetId) {
-        const deleteBuffet = await Buffet.destroy({ where: { id: +id } })
-
-        return res.status(200).json({ message: `${buffetId.meal} is deleted` })
-      }
+      return res.status(200).json({ message: `BuffetId ${id}, ${meal} is deleted` })
 
     } catch (err) {
       return next(err)
