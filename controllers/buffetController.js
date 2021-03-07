@@ -46,7 +46,6 @@ class BuffetController {
       const buffetId = await Buffet.findByPk(id, {
         attributes: { exclude: ['createdAt', 'updatedAt'] }
       })
-      console.log(buffetId)
 
       if (!buffetId) { return next({ name: 404 }) }
       if (buffetId) {
@@ -61,15 +60,45 @@ class BuffetController {
   static async updateBuffet(req, res, next) {
     try {
       const { id } = req.params
+      const { meal, maxCapacity, price } = req.body
 
-      const buffetId = await Buffet.findByPk(id, {
-        attributes: { exclude: ['createdAt', 'updatedAt'] }
-      })
-      console.log(buffetId)
+      const buffetId = await Buffet.findByPk(id)
+
+      if (!buffetId) { return next({ name: 404 }) }
+
+      if (buffetId) {
+        const updateBuffet = await Buffet.update({
+          meal,
+          maxCapacity: +maxCapacity,
+          price: +price
+        }, { where: { id: +id } })
+
+        const response = {
+          id: +id,
+          meal,
+          maxCapacity: +maxCapacity,
+          price: +price
+        }
+
+        return res.status(200).json({ data: response })
+      }
+
+    } catch (err) {
+      return next(err)
+    }
+  }
+
+  static async deleteBuffet(req, res, next) {
+    try {
+      const { id } = req.params
+
+      const buffetId = await Buffet.findByPk(id)
 
       if (!buffetId) { return next({ name: 404 }) }
       if (buffetId) {
-        return res.status(200).json({ data: buffetId })
+        const deleteBuffet = await Buffet.destroy({ where: { id: +id } })
+
+        return res.status(200).json({ message: `${buffetId.meal} is deleted` })
       }
 
     } catch (err) {
