@@ -15,9 +15,35 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Buffet.init({
-    meal: DataTypes.STRING,
-    maxCapacity: DataTypes.INTEGER,
-    price: DataTypes.INTEGER
+    meal: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: { msg: 'meal already taken.' },
+      validate: {
+        notNull: { msg: 'meal is null' },
+        notEmpty: { msg: 'meal is empty' }
+      }
+    },
+    maxCapacity: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notNull: { msg: 'maxCapacity is null' },
+        notEmpty: { msg: 'maxCapacity is empty' },
+        isInt: { msg: 'maxCapacity must be integer' },
+        min: { args: 1, msg: 'maxCapacity minimum is 1' }
+      }
+    },
+    price: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notNull: { msg: 'price is null' },
+        notEmpty: { msg: 'price is empty' },
+        isInt: { msg: 'price must be integer' },
+        min: { args: 1, msg: 'price minimum is 1' }
+      }
+    }
   }, {
     sequelize,
     modelName: 'Buffet',

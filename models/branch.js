@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     name: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: { msg: 'name already taken.' },
+      unique: { msg: 'name already taken' },
       validate: {
         notNull: { msg: 'name is null' },
         notEmpty: { msg: 'name is empty' }
