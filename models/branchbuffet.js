@@ -16,11 +16,51 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   BranchBuffet.init({
-    BranchId: DataTypes.INTEGER,
-    BuffetId: DataTypes.INTEGER,
-    day: DataTypes.INTEGER,
-    startTime: DataTypes.INTEGER,
-    endTime: DataTypes.INTEGER
+    BranchId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notNull: { msg: 'BranchId is null' },
+        notEmpty: { msg: 'BranchId is empty' },
+        isInt: { msg: 'BranchId must be integer' }
+      }
+    },
+    BuffetId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notNull: { msg: 'BuffetId is null' },
+        notEmpty: { msg: 'BuffetId is empty' },
+        isInt: { msg: 'BuffetId must be integer' }
+      }
+    },
+    day: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notNull: { msg: 'day is null' },
+        notEmpty: { msg: 'day is empty' },
+        isInt: { msg: 'day must be integer' },
+        min: { args: 0, msg: 'day minimum is 0' },
+        max: { args: 6, msg: 'day maximum is 1' }
+      }
+    },
+    startTime: {
+      type: DataTypes.TIME,
+      allowNull: false,
+      validate: {
+        notNull: { msg: 'closeHours is null' },
+        notEmpty: { msg: 'closeHours is empty' }
+      }
+    },
+    endTime: {
+      type: DataTypes.TIME,
+      allowNull: false,
+      validate: {
+        notNull: { msg: 'closeHours is null' },
+        notEmpty: { msg: 'closeHours is empty' }
+      }
+    }
   }, {
     sequelize,
     modelName: 'BranchBuffet',
