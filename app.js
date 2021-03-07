@@ -9,6 +9,11 @@ app.use(express.json())
 app.use(cors())
 
 // router
+const router = require('./routers')
+const errorHandlers = require('./middleware/errorHandlers')
+
 app.get('/', (req, res) => res.send('Welcome to FaBellies SERVER'))
+app.use('/', router)
+app.use(errorHandlers)
 
 app.listen(PORT, () => console.log(`>>> Connected at ${PORT}`))

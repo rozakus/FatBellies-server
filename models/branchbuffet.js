@@ -11,6 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      BranchBuffet.belongsTo(models.Branch, { sourceKey: 'id', foreignKey: 'BranchId' })
+      BranchBuffet.belongsTo(models.Buffet, { sourceKey: 'id', foreignKey: 'BuffetId' })
     }
   };
   BranchBuffet.init({
