@@ -2,7 +2,7 @@ const { Buffet, Branch } = require('../models')
 
 async function checkBranchId(req, res, next) {
   try {
-    const id = req.params.id || req.params.BranchId
+    const id = +req.params.id || +req.params.BranchId || +req.body.BranchId
 
     const branchId = await Branch.findByPk(id)
 
@@ -24,7 +24,7 @@ async function checkBranchId(req, res, next) {
 
 async function checkBuffetId(req, res, next) {
   try {
-    const id = req.params.id || req.params.BuffetId
+    const id = +req.params.id || +req.params.BuffetId || +req.body.BuffetId
 
     const buffetId = await Buffet.findByPk(id)
 

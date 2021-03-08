@@ -41,8 +41,7 @@ module.exports = (sequelize, DataTypes) => {
         notNull: { msg: 'day is null' },
         notEmpty: { msg: 'day is empty' },
         isInt: { msg: 'day must be integer' },
-        min: { args: 0, msg: 'day minimum is 0' },
-        max: { args: 6, msg: 'day maximum is 1' }
+        max: { args: 6, msg: 'day maximum is 6' }
       }
     },
     startTime: {
