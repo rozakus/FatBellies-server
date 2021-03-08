@@ -1,4 +1,4 @@
-const { Buffet, Branch } = require('../models')
+const { Buffet, Branch, BranchBuffet } = require('../models')
 
 async function checkBranchId(req, res, next) {
   try {
@@ -44,6 +44,28 @@ async function checkBuffetId(req, res, next) {
   }
 }
 
+async function checkBranchBuffetId(req, res, next) {
+  try {
+    const id = +req.params.id
+
+    const BranchBuffetId = await BranchBuffet.findByPk(id)
+
+    if (!BranchBuffetId) {
+      console.log(`>>> auth : BranchBuffetId ${id} not found`)
+      return next({ name: 404, message: `BranchBuffetId ${id} not found` })
+    }
+
+    if (BranchBuffetId) {
+      console.log(`>>> auth : BranchBuffetId ${id} found`)
+      req.BranchBuffet = BranchBuffetId
+      return next()
+    }
+
+  } catch (err) {
+    return next(err)
+  }
+}
+
 module.exports = {
-  checkBranchId, checkBuffetId
+  checkBranchId, checkBuffetId, checkBranchBuffetId
 }

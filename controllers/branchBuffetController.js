@@ -43,7 +43,42 @@ class BranchBuffetController {
         }]
       })
 
-      return res.status(200).json(all)
+      return res.status(200).json({ data: all })
+
+    } catch (err) {
+      return next(err)
+    }
+  }
+
+  static async getBranchBuffetById(req, res, next) {
+    try {
+      const { id } = req.params
+
+      const data = await BranchBuffet.findByPk(id, {
+        attributes: { exclude: ['createdAt', 'updatedAt'] },
+        include: [{
+          model: Branch,
+          attributes: { exclude: ['createdAt', 'updatedAt'] }
+        }, {
+          model: Buffet,
+          attributes: { exclude: ['createdAt', 'updatedAt'] }
+        }]
+      })
+
+      return res.status(200).json({ data: data })
+
+    } catch (err) {
+      return next(err)
+    }
+  }
+
+  static async deleteBranchBuffetById(req, res, next) {
+    try {
+      const { id } = req.BranchBuffet
+
+      const deleteBrachBuffet = await BranchBuffet.destroy({ where: { id: +id } })
+
+      return res.status(200).json({ message: `BranchBuffetId ${id} is deleted` })
 
     } catch (err) {
       return next(err)

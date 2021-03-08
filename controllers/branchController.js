@@ -1,4 +1,4 @@
-const { Branch, Buffet } = require('../models')
+const { Branch, Buffet, BranchBuffet } = require('../models')
 
 class BranchController {
   static async addBranch(req, res, next) {
@@ -26,8 +26,25 @@ class BranchController {
     try {
       const allBranch = await Branch.findAll({
         order: [['id']],
-        attributes: { exclude: ['createdAt', 'updatedAt'] }
+        attributes: { exclude: ['createdAt', 'updatedAt'] },
+        include: [{
+          model: BranchBuffet,
+          order: [['day']],
+          attributes: { exclude: ['createdAt', 'updatedAt'] },
+          include: [{
+            model: Buffet,
+            attributes: { exclude: ['createdAt', 'updatedAt'] }
+          }]
+        }]
       })
+
+      // const convert = allBranch.map((branch) => {
+      //   branch.BranchBuffets.map(BranchBuffet => {
+      //     if (BranchBuffet.day === 0) { console.log(BranchBuffet.Buffet.dataValues) }
+      //   })
+      // });
+
+      // console.log(convert)
 
       return res.status(200).json({ data: allBranch })
 
